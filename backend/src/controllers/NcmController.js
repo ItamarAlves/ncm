@@ -4,16 +4,25 @@ import requestHtml from 'request';
 class NcmController {
     index(request, response) {
 
-        var ncmCodigoArray = request.body;
+        var { ncmsArray } = request.body;
 
-        const url = "https://cosmos.bluesoft.com.br/ncms/21069029";
+        // console.log(ncmsArray);
+        // console.log(ncmsArray.length);
 
+        for (let i = 0; i < ncmsArray.length; i++) {
+            var ncmId = ncmsArray[i];
+
+            const url = "https://cosmos.bluesoft.com.br/ncms/"+ncmId;
             
-            
-            requestHtml(url, function(error, responseHtml, html){
+            requestHtml(url, function(error, responseHtml, html) {
                 if (!error) {
                     var $ = cheerio.load(html);
                     
+                    // console.log(responseHtml);
+
+                    var statusCode  = responseHtml.statusCode;
+
+                    // if (statusCode != "200") {
                     $('#container-principal').each(function() {
                         var ncm = $(this).find('#ncm-description').text().trim();
                         
@@ -21,7 +30,6 @@ class NcmController {
                         
                         var ativoInativo = 0;
                         if (dataExpired == null || dataExpired == "") {
-                            console.log("Esse ncm está ativo.");
                             ativoInativo = 1;
                         }
                         
@@ -30,9 +38,11 @@ class NcmController {
                             "Data Expirada: ": dataExpired,
                             "Ativo-Inativo": ativoInativo
                         })
-                    })  
+                    })
+                // }
                 }
         });
+    }
     }
     
     store(request, response) {
