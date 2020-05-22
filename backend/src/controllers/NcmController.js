@@ -5,10 +5,7 @@ class NcmController {
     index(request, response) {
 
         var { ncmsArray } = request.body;
-
-        // console.log(ncmsArray);
-        // console.log(ncmsArray.length);
-
+        
         for (let i = 0; i < ncmsArray.length; i++) {
             var ncmId = ncmsArray[i];
 
@@ -26,17 +23,26 @@ class NcmController {
                     $('#container-principal').each(function() {
                         var ncm = $(this).find('#ncm-description').text().trim();
                         
-                        var dataExpired = $(this).find('.text-danger').text().trim();
+                        var splitArray = ncm.split("-");
+                        var code = splitArray[0]; 
+                        var shortDescription = splitArray[1];
+                        var fullDescription = ncm.substring(code.length + 1, ncm.length);
+
+                        var expiredDate = $(this).find('.text-danger').text().trim();
                         
-                        var ativoInativo = 0;
-                        if (dataExpired == null || dataExpired == "") {
-                            ativoInativo = 1;
+                        var active = 0;
+                        if (expiredDate == null || expiredDate == "") {
+                            active = 1;
                         }
                         
                         response.json({
-                            "NCM: ": ncm,
-                            "Data Expirada: ": dataExpired,
-                            "Ativo-Inativo": ativoInativo
+                            "Ncm": {
+                                "code" : code,
+                                "fullDescription": fullDescription,
+                                "shortDescription": shortDescription,
+                                "active": active,
+                                "expiredDate": expiredDate
+                            }
                         })
                     })
                 // }
