@@ -7,6 +7,7 @@ class NcmController {
 
         var { ncmsArray } = request.query;
         // console.log(ncmsArray);
+        // console.log(ncmsArray.length);
         var size = 1;
         var ncmTemp = "";
         for (let i = 0; i < ncmsArray.length; i++) {
@@ -18,6 +19,8 @@ class NcmController {
         if (size === 1) {
             ncmsArray = [ncmTemp];
         }
+
+        let ncmJson = new Array(ncmsArray.length);
         try {
             for (let i = 0; i < ncmsArray.length; i++) {
                 var ncmId = ncmsArray[i];
@@ -43,6 +46,20 @@ class NcmController {
                                     active = 1;
                                 }
                                 if (fullDescription != null && fullDescription != "") {
+
+                                    // ncmJson[i] = [
+                                    // {
+                                    //     "ncm" : {
+                                    //         "code": code,
+                                    //         "fullDescription": fullDescription,
+                                    //         "shortDescription": shortDescription,
+                                    //         "active": active,
+                                    //         "expiredDate": expiredDate  
+                                    //     }
+                                    // }
+                                    // ];
+
+                                    console.log(ncmJson);
 
                                     response.json({
                                         "Ncm": {
